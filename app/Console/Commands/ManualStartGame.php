@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Jobs\StartGame;
 
 class ManualStartGame extends Command
 {
@@ -18,13 +19,13 @@ class ManualStartGame extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Start the first game';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        //
+        StartGame::dispatch();
     }
 }

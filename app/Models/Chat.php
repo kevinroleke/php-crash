@@ -9,6 +9,7 @@ class Chat extends Model
 {
     /** @use HasFactory<\Database\Factories\GameFactory> */
     use HasFactory;
+    protected $table = 'chat';
 
     /**
      * The attributes that are mass assignable.
