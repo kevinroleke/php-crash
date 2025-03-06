@@ -17,6 +17,11 @@ class UpdateBet implements ShouldBroadcast
 
     public $bet;
 
+    public function broadcastAs()
+    {
+        return 'UpdateBet';
+    }
+
     /**
      * Create a new event instance.
      */
