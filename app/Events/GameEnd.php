@@ -17,6 +17,11 @@ class GameEnd implements ShouldBroadcast
 
     public $game;
 
+    public function broadcastAs()
+    {
+        return 'GameEnd';
+    }
+
     /**
      * Create a new event instance.
      */

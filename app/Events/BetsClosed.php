@@ -25,6 +25,11 @@ class BetsClosed implements ShouldBroadcast
         $this->game = $game;
     }
 
+    public function broadcastAs()
+    {
+        return 'BetsClosed';
+    }
+
     public function broadcastWith()
     {
         return [

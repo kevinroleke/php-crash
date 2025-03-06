@@ -25,6 +25,11 @@ class NewGame implements ShouldBroadcast
         $this->game = $game;
     }
 
+    public function broadcastAs()
+    {
+        return 'NewGame';
+    }
+
     public function broadcastWith()
     {
         return [
