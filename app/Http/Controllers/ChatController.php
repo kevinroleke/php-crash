@@ -10,7 +10,6 @@ class ChatController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
     }
     /**
      * Display a listing of the resource.
@@ -29,8 +28,8 @@ class ChatController extends Controller
             'message' => $request->message,
         ]);
 
-        broadcast(new ChatMessage($chat->load('user')))->toOthers();
+        broadcast(new ChatMessage($chat->load('user')));
 
-        return ['sent' => true];
+        return ['success' => true];
     }
 }
