@@ -14,12 +14,16 @@ class NewGame
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $game;
+
     /**
      * Create a new event instance.
      */
-    public function __construct()
+    public function __construct(Game $game)
     {
-        //
+        $game->multiplier = 0;
+        $game->end_time = 0;
+        $this->game = $game;
     }
 
     /**
