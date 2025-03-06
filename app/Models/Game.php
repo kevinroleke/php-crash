@@ -20,6 +20,7 @@ class Game extends Model
         'end_time',
         'bet_deadline',
         'multiplier',
+        'done',
     ];
 
     /**

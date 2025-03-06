@@ -21,6 +21,7 @@ class GameFactory extends Factory
             'end_time' => now() + 10 + 1.2,
             'bet_deadline' => now() + 10,
             'multiplier' => 220,
+            'done' => false,
         ];
     }
 }

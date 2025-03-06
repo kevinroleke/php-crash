@@ -17,6 +17,7 @@ return new class extends Migration
             $table->timestamp('bet_deadline');
             $table->timestamp('end_time');
             $table->integer('multiplier');
+            $table->boolean('done');
         });
     }
 
