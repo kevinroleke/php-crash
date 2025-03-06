@@ -96,7 +96,7 @@ export function Chat() {
     }, [messages]);
 
     return (
-        <div className="bg-background flex flex-col p-5 rounded-xl h-full">
+        <div className="flex flex-col p-5 rounded-xl h-full">
             <div ref={msgBox} className="flex-1 overflow-y-scroll">
                 { messages.map(msg => (
                   <p key={msg.id} className="mb-1"><span className={getColorFromName(msg.author)}>{msg.author}: </span>{msg.message}<span className="block text-sm text-gray-500">{msg.date.toLocaleString()}</span></p>
