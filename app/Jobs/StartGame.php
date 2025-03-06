@@ -33,7 +33,7 @@ class StartGame implements ShouldQueue
 
         $n = rand(0, 4503599627370495);
         $n /= 2**52;
-        $n = max(floor(99 / (1 - $n)), 100);
+        $n = min(max(floor(99 / (1 - $n)), 100), 5000);
 
         $game = new Game;
         $game->start_time = now();

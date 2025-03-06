@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Game extends Model
 {
@@ -48,6 +49,6 @@ class Game extends Model
 
     public function bets(): HasMany
     {
-        return $this->HasMany(Bet::class);
+        return $this->hasMany(Bet::class, 'game_id');
     }
 }
