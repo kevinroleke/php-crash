@@ -39,4 +39,9 @@ class Bet extends Model
     {
         return [];
     }
+
+    public function game(): BelongsTo
+    {
+        return $this->belongsTo(Game::class);
+    }
 }
