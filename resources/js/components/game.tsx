@@ -7,6 +7,7 @@ export function Game() {
     const [multiplier, setMultiplier] = useState(100);
     const [multiplierColor, setMutliplierColor] = useState('text-stone-500');
     const [countdown, setCountdown] = useState(null);
+    const [tick, setTick] = useState(false);
 
     useEffect(() => {
         //@ts-ignore
@@ -26,12 +27,24 @@ export function Game() {
         });
         e.channel('game').listen('.GameEnd', (c: any) => {
             setMutliplierColor('text-red-500');
+            setTick(false);
         });
         e.channel('game').listen('.BetsClosed', (c: any) => {
             setCountdown(null);
             setMultiplier(100);
+            setTick(true);
         });
     }, []);
+
+    useEffect(() => {
+        if (tick) {
+            const t = setInterval(() => {
+                setMultiplier(prev => prev + 1);
+            }, 100);
+
+            return () => clearInterval(t);
+        }
+    }, [tick]);
 
     return (
         <div className="bg-background items-center justify-center flex flex-col p-5 rounded-xl h-full w-full">
