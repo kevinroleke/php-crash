@@ -6,7 +6,7 @@ import Pusher from 'pusher-js';
 export function Game() {
     const [multiplier, setMultiplier] = useState(100);
     const [multiplierColor, setMutliplierColor] = useState('text-stone-500');
-    const [countdown, setCountdown] = useState(null);
+    const [countdown, setCountdown] = useState<Date | null>(null);
     const [tick, setTick] = useState(false);
 
     useEffect(() => {
@@ -22,11 +22,13 @@ export function Game() {
             enabledTransports: ['ws', 'wss'],
         });
         e.channel('game').listen('.NewGame', (c: any) => {
+            setMultiplier(100);
             setMutliplierColor('text-stone-500');
-            setCountdown(c.game.bet_deadline);
+            setCountdown(new Date(c.bet_deadline));
         });
         e.channel('game').listen('.GameEnd', (c: any) => {
             setMutliplierColor('text-red-500');
+            setMultiplier(c.game.multiplier);
             setTick(false);
         });
         e.channel('game').listen('.BetsClosed', (c: any) => {

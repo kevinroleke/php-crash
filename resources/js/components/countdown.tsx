@@ -24,5 +24,5 @@ export default({ targetDate, onFinish }: { targetDate: Date, onFinish: () => voi
     return () => clearInterval(timer);
   }, [targetDate]);
 
-  return <span>{seconds}...</span>;
+  return <span>{seconds}</span>;
 };
