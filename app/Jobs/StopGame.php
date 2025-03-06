@@ -5,6 +5,7 @@ namespace App\Jobs;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use App\Models\Game;
+use App\Events\GameEnd;
 
 class StopGame implements ShouldQueue
 {
@@ -37,6 +38,8 @@ class StopGame implements ShouldQueue
                 $bet->save();
             }
         }
+
+        broadcast(new GameEnd($game));
 
         StartGame::dispatch()->delay(now()->addSeconds(5));
     }

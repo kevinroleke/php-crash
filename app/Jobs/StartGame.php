@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Game;
+use App\Events\NewGame;
 
 class StartGame implements ShouldQueue
 {
@@ -43,6 +44,9 @@ class StartGame implements ShouldQueue
         $game->end_time = now()->addSeconds(15)->addMilliseconds(($n-100)*100);
         $game->save();
 
+        broadcast(new NewGame($game));
+
+        CloseBets::dispatch()->delay(now()->addSeconds(15));
         StopGame::dispatch()->delay(now()->addSeconds(15)->addMilliseconds(($n-100)*100));
     }
 }
