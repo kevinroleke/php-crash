@@ -28,10 +28,7 @@ class Game extends Model
      *
      * @var list<string>
      */
-    protected $hidden = [
-        'end_time',
-        'multiplier',
-    ];
+    protected $hidden = [];
 
     /**
      * Get the attributes that should be cast.
