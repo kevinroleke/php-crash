@@ -40,9 +40,9 @@ class StartGame implements ShouldQueue
         $game->bet_deadline = now()->addSeconds(15);
         $game->done = false;
         $game->multiplier = $n;
-        $game->end_time = now()->addSeconds(15)->addMilliseconds($n*100);
+        $game->end_time = now()->addSeconds(15)->addMilliseconds(($n-100)*100);
         $game->save();
 
-        StopGame::dispatch()->delay(now()->addSeconds(15)->addMilliseconds($n*100));
+        StopGame::dispatch()->delay(now()->addSeconds(15)->addMilliseconds(($n-100)*100));
     }
 }

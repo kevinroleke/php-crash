@@ -36,7 +36,7 @@ class BetController extends Controller
         }
 
         $msAfterStart = now()->diffWithCarbonInterval($bet->$game->bet_deadline)->total('milliseconds');
-        $bet->multiplier = 1 + $msAfterStart/100;
+        $bet->multiplier = 100 + $msAfterStart/100;
         $bet->done = true;
         $bet->save();
     }

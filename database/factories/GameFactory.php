@@ -18,8 +18,8 @@ class GameFactory extends Factory
     {
         return [
             'start_time' => now(),
-            'end_time' => now() + 10 + 1.2,
-            'bet_deadline' => now() + 10,
+            'end_time' => now().addSeconds(15).addMilliseconds(120*100),
+            'bet_deadline' => now().addSeconds(15),
             'multiplier' => 220,
             'done' => false,
         ];
