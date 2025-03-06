@@ -13,7 +13,7 @@ class BetController extends Controller
      */
     public function store(Request $request)
     {
-        $bet = Game::where('done', false)->firstOrFail()->bets()->create([
+        $bet = Game::where('done', false)->where('bet_deadline', '>', now())->firstOrFail()->bets()->create([
             'user_id' => auth()->user()->id,
             'amount' => $request->amount,
             'multiplier' => 0,
@@ -38,6 +38,8 @@ class BetController extends Controller
         $msAfterStart = now()->diffWithCarbonInterval($bet->$game->bet_deadline)->total('milliseconds');
         $bet->multiplier = 100 + $msAfterStart/100;
         $bet->done = true;
+
         $bet->save();
+        broadcast(new UpdateBet($bet));
     }
 }
