@@ -9,6 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Game;
 
 class NewGame implements ShouldBroadcast
 {
@@ -21,9 +22,17 @@ class NewGame implements ShouldBroadcast
      */
     public function __construct(Game $game)
     {
-        $game->multiplier = 0;
-        $game->end_time = 0;
         $this->game = $game;
+    }
+
+    public function broadcastWith()
+    {
+        return [
+            'start_time' => $this->game->start_time,
+            'bet_deadline' => $this->game->bet_deadline,
+            'done' => $this->game->done,
+            'id' => $this->game->id,
+        ];
     }
 
     /**
