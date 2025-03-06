@@ -10,6 +10,7 @@ class Bet extends Model
     /** @use HasFactory<\Database\Factories\BetFactory> */
     use HasFactory;
     protected $table = 'bet';
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.

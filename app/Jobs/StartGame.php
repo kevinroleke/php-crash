@@ -31,9 +31,9 @@ class StartGame implements ShouldQueue
             return;
         }
 
-        $n = gmp_random_range(0, 4503599627370495);
+        $n = rand(0, 4503599627370495);
         $n /= 2**52;
-        $n = max(floor(99 / (1 - n)), 100);
+        $n = max(floor(99 / (1 - $n)), 100);
 
         $game = new Game;
         $game->start_time = now();
