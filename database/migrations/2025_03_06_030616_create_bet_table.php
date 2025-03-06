@@ -13,7 +13,16 @@ return new class extends Migration
     {
         Schema::create('bet', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->index('user_id');
+            $table->index('game_id');
+            $table->integer('user_id');
+            $table->integer('game_id');
+            $table->integer('amount');
+            $table->integer('multiplier');
+            $table->boolean('done');
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('game_id')->references('id')->on('game');
         });
     }
 

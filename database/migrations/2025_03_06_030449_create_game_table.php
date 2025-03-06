@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('game', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->timestamp('start_time');
+            $table->timestamp('bet_deadline');
+            $table->timestamp('end_time');
+            $table->integer('multiplier');
         });
     }
 
