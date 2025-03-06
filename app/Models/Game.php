@@ -46,4 +46,9 @@ class Game extends Model
             'bet_deadline' => 'datetime',
         ];
     }
+
+    public function bets(): HasMany
+    {
+        return $this->HasMany(Bet::class);
+    }
 }

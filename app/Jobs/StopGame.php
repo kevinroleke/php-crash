@@ -22,6 +22,17 @@ class StopGame implements ShouldQueue
      */
     public function handle(): void
     {
-        //
+        $game = Game::where('done', false)->first();
+        if ($game == null) {
+            return;
+        }
+
+        $game->done = true;
+        $game->save();
+        foreach($game->bets()->where('done', false)->get() as $bet) {
+            $bet->multiplier = 0;
+            $bet->done = true;
+            $bet->save();
+        }
     }
 }

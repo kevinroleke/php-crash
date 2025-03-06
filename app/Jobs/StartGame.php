@@ -42,5 +42,7 @@ class StartGame implements ShouldQueue
         $game->multiplier = $n;
         $game->end_time = now()->addSeconds(15)->addMilliseconds($n*100);
         $game->save();
+
+        StopGame::dispatch()->delay(now()->addSeconds(15)->addMilliseconds($n*100));
     }
 }
