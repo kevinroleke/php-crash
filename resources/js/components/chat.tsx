@@ -49,6 +49,7 @@ type Message = {
   message: string,
   date: Date,
   id: number,
+  isCroupier: boolean,
 };
 
 export function Chat() {
@@ -79,13 +80,32 @@ export function Chat() {
             enabledTransports: ['ws', 'wss'],
         });
         e.channel('chat').listen('.ChatMessage', (c: any) => {
-          console.log(messages);
           setMessages(prevMessages => [...prevMessages, {
               id: c.chat.id,
               author: c.chat.user.name,
               message: c.chat.message,
-              date: c.chat.done
+              date: c.chat.done,
+              isCroupier: false,
           }]);
+        });
+        e.channel('chat').listen('.UpdateBet', (b: any) => {
+            if (!b.bet.done) {
+              setMessages(prevMessages => [...prevMessages, {
+                  id: Math.random(),
+                  author: 'Croupier',
+                  message: `${b.bet.user.name} placed a bet for $${b.bet.amount}`,
+                  date: new Date(),
+                  isCroupier: true,
+              }]);
+            } else {
+              setMessages(prevMessages => [...prevMessages, {
+                  id: Math.random(),
+                  author: 'Croupier',
+                  message: `${b.bet.user.name} cashed at ${(b.bet.multiplier/100).toFixed(2)} for $${(b.bet.amount*(b.bet.multiplier/100)).toFixed(2)}`,
+                  date: new Date(),
+                  isCroupier: true,
+              }]);
+            }
         });
     }, []);
 
