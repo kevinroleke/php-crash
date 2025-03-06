@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/react';
-import { FormEventHandler, useEffect, useState } from 'react';
+import { FormEventHandler, useEffect, useRef, useState } from 'react';
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 import axios from 'axios';
@@ -57,6 +57,7 @@ export function Chat() {
     });
 
     const [messages, setMessages] = useState<Message[]>([]);
+    const msgBox = useRef(null);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -88,9 +89,15 @@ export function Chat() {
         });
     }, []);
 
+    useEffect(() => {
+      if (msgBox.current) {
+          msgBox.current.scrollTop = msgBox.current.scrollHeight;
+      }
+    }, [messages]);
+
     return (
         <div className="bg-background flex flex-col p-5 rounded-xl h-full">
-            <div className="flex-1 overflow-y-scroll">
+            <div ref={msgBox} className="flex-1 overflow-y-scroll">
                 { messages.map(msg => (
                   <p key={msg.id} className="mb-1"><span className={getColorFromName(msg.author)}>{msg.author}: </span>{msg.message}<span className="block text-sm text-gray-500">{msg.date.toLocaleString()}</span></p>
                 ))}
