@@ -32,8 +32,8 @@ class BetController extends Controller
      */
     public function update(Request $request)
     {
-        $bet = Bet::with('game')->where('user_id', auth()->user()->id)->where('bet_deadline', '<', now())->where('done', false)->firstOrFail();
-        if ($bet->game->end_time <= now() || $bet->game->done) {
+        $bet = Bet::with('game')->where('user_id', auth()->user()->id)->where('done', false)->firstOrFail();
+        if ($bet->game->end_time <= now() || $bet->game->done || $bet->game->bet_deadline > now()) {
             return ['cashed' => false];
         }
 
