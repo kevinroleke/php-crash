@@ -70,6 +70,6 @@ class User extends Authenticatable
             ->selectRaw('SUM(amount * multiplier) as winnings')
             ->value('winnings') ?? 0;
 
-        return $deposits - $betsPlaced + $betWinnings;
+        return $deposits - $betsPlaced + ($betWinnings/100);
     }
 }

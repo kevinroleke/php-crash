@@ -47,8 +47,9 @@ export function Bet() {
     const [amount, setAmount] = useState();
 
     const place = () => {
-        setBetDisabled(true);
-        axios.put(route('bet'), {amount})
+        axios.put(route('bet'), {amount}).then(d => {
+            if (d.data.placed) setBetDisabled(true);
+        })
     };
 
     const cash = () => {
