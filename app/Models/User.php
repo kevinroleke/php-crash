@@ -52,7 +52,24 @@ class User extends Authenticatable
         return $this->hasMany(Chat::class);
     }
 
-    public function balance(): float {
+    public function bets(): HasMany
+    {
+        return $this->hasMany(Bet::class);
+    }
 
+    public function deposits(): HasMany
+    {
+        return $this->hasMany(Deposit::class);
+    }
+
+    public function getBalanceAttribute(): float
+    {
+        $deposits = $this->deposits()->sum('amount');
+        $betsPlaced = $this->bets()->sum('amount');
+        $betWinnings = $this->bets()
+            ->selectRaw('SUM(amount * multiplier) as winnings')
+            ->value('winnings') ?? 0;
+
+        return $deposits - $betsPlaced + $betWinnings;
     }
 }
