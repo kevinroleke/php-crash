@@ -8,6 +8,7 @@ export function Game() {
     const [multiplierColor, setMutliplierColor] = useState('text-stone-500');
     const [countdown, setCountdown] = useState<Date | null>(null);
     const [tick, setTick] = useState(false);
+    const [game, setGame] = useState<any>(null);
 
     useEffect(() => {
         //@ts-ignore
@@ -22,14 +23,16 @@ export function Game() {
             enabledTransports: ['ws', 'wss'],
         });
         e.channel('game').listen('.NewGame', (c: any) => {
+            setGame(c);
             setMultiplier(100);
             setMutliplierColor('text-stone-500');
             setCountdown(new Date(c.bet_deadline));
         });
         e.channel('game').listen('.GameEnd', (c: any) => {
+            setTick(false);
             setMutliplierColor('text-red-500');
             setMultiplier(c.game.multiplier);
-            setTick(false);
+            setGame(c.game);
         });
         e.channel('game').listen('.BetsClosed', (c: any) => {
             setCountdown(null);
@@ -41,7 +44,8 @@ export function Game() {
     useEffect(() => {
         if (tick) {
             const t = setInterval(() => {
-                setMultiplier(prev => prev + 1);
+                const ms = +(new Date()) - +(new Date(game!.bet_deadline));
+                setMultiplier(100+ms/100);
             }, 100);
 
             return () => clearInterval(t);
