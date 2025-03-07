@@ -9,6 +9,19 @@ export function Bet() {
     const [cashDisabled, setCashDisabled] = useState(true);
     const [betDisabled, setBetDisabled] = useState(true);
     useEffect(() => {
+        axios.get(route('game')).then(d => {
+            if (new Date(d.data.bet_deadline) > new Date()) {
+                setCashDisabled(true);
+                setBetDisabled(false);
+            } else if (!d.data.done) {
+                setCashDisabled(false);
+                setBetDisabled(true);
+            } else {
+                setCashDisabled(true);
+                setBetDisabled(true);
+            }
+        });
+
         //@ts-ignore
         window.Pusher = Pusher;
         let e = new Echo({

@@ -2,15 +2,22 @@ import Countdown from './countdown';
 import { FormEventHandler, useEffect, useRef, useState } from 'react';
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
+import axios from 'axios';
 
 export function Game() {
     const [multiplier, setMultiplier] = useState(100);
     const [multiplierColor, setMutliplierColor] = useState('text-stone-500');
-    const [countdown, setCountdown] = useState<Date | null>(null);
-    const [tick, setTick] = useState(false);
     const [game, setGame] = useState<any>(null);
 
     useEffect(() => {
+        axios.get(route('game')).then(d => {
+            setGame(d.data);
+            if (d.data.done) {
+                setMultiplier(d.data.multiplier);
+                setMutliplierColor('text-red-500');
+            }
+        });
+
         //@ts-ignore
         window.Pusher = Pusher;
         let e = new Echo({
@@ -26,36 +33,35 @@ export function Game() {
             setGame(c);
             setMultiplier(100);
             setMutliplierColor('text-stone-500');
-            setCountdown(new Date(c.bet_deadline));
         });
         e.channel('game').listen('.GameEnd', (c: any) => {
-            setTick(false);
             setMutliplierColor('text-red-500');
             setMultiplier(c.game.multiplier);
             setGame(c.game);
         });
         e.channel('game').listen('.BetsClosed', (c: any) => {
-            setCountdown(null);
             setMultiplier(100);
-            setTick(true);
         });
     }, []);
 
     useEffect(() => {
-        if (tick) {
-            const t = setInterval(() => {
-                const ms = +(new Date()) - +(new Date(game!.bet_deadline));
-                setMultiplier(100+ms/100);
-            }, 100);
+        const t = setInterval(() => {
+            if (game == null) return;
+            if (game.done) return;
+            const ms = +(new Date()) - +(new Date(game!.bet_deadline));
+            if (!ms) return;
+            setMultiplier(100+ms/100);
+        }, 100);
 
-            return () => clearInterval(t);
-        }
-    }, [tick]);
+        return () => clearInterval(t);
+    }, [game]);
+
+    if (game == null) return;
 
     return (
         <div className="bg-background items-center justify-center flex flex-col p-5 rounded-xl h-full w-full">
-            { countdown !== null ?
-                <h1 style={{fontSize: '13rem'}}><Countdown targetDate={countdown} onFinish={() => setCountdown(null)} /></h1>
+            { new Date(game.bet_deadline) > new Date() ?
+                <h1 style={{fontSize: '13rem'}}><Countdown targetDate={new Date(game.bet_deadline)} onFinish={() => {}} /></h1>
                 :
                 <h1 style={{fontSize: '13rem'}} className={multiplierColor}>{(multiplier/100).toFixed(2)}x</h1>
             }
