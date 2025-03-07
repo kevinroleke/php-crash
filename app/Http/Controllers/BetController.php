@@ -15,6 +15,9 @@ class BetController extends Controller
      */
     public function store(Request $request)
     {
+        if ($bet->amount > auth()->user()->balance) {
+            return ['placed' => false];
+        }
         $bet = Game::where('done', false)->where('bet_deadline', '>', now())->firstOrFail()->bets()->create([
             'user_id' => auth()->user()->id,
             'amount' => $request->amount,
