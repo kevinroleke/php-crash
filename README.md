@@ -1,7 +1,7 @@
 # PHP Crash
 
 A social gambling game made with Laravel, Reverb and EloquentORM.
-[!score](demo.png)
+![score](demo.png)
 
 ## Getting Started
 ```bash
